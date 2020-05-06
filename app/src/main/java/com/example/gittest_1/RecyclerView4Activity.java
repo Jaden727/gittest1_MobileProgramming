@@ -82,4 +82,4 @@ public class RecyclerView4Activity extends AppCompatActivity {
                 intent.putExtra("MEMO", memo);
                 startActivityForResult(intent, requestCode);
             }
-        }
+        } 

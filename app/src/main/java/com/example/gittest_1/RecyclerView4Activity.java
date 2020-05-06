@@ -1,83 +1,72 @@
 package com.example.gittest_1;
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import java.util.ArrayList;
 
-public class RecyclerView4Adapter extends RecyclerView.Adapter<RecyclerView4Adapter.ViewHolder> {
+public class RecyclerView4Activity extends AppCompatActivity {
+    private static final int REQUEST_CREATE = 0;
+    RecyclerView4Adapter recyclerView4Adapter;
+    ArrayList<String> arrayList;
 
-    class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-        TextView textView1, textView2;
-        CheckBox checkBox;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recycler_view4);
 
-        public ViewHolder(View view) {
-            super(view);
-            textView1 = view.findViewById(R.id.textView1);
-            textView2 = view.findViewById(R.id.textView2);
-            checkBox = view.findViewById(R.id.checkBox);
-            textView1.setOnClickListener(this);
-            checkBox.setOnCheckedChangeListener(this);
-        }
+        arrayList = new ArrayList<String>();
+        arrayList.add("one");
+        arrayList.add("two");
 
-        public void setData() {
-            Memo memo = arrayList.get(getAdapterPosition());
-            textView1.setText(memo.getTitle());
-            textView2.setText(memo.getDateFormatted());
-            checkBox.setChecked(memo.isChecked());
-        }
+        recyclerView4Adapter = new RecyclerView4Adapter(this, arrayList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(recyclerView4Adapter);
 
-        @Override
-        public void onClick(View view) {
-            Memo memo = arrayList.get(super.getAdapterPosition());
-            String s = String.format("index: %d,  title: %s", super.getAdapterPosition(), memo.getTitle());
-            Toast.makeText(view.getContext(), s, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Memo memo = arrayList.get(super.getAdapterPosition());
-            memo.setChecked(isChecked);
-            if (isChecked) ++checkedCount;
-            else --checkedCount;
-            if (isChecked && checkedCount == 1 || !isChecked && checkedCount == 0) {
-                Activity activity = (Activity) textView1.getContext();
-                activity.invalidateOptionsMenu();
+        Button b = (Button)findViewById(R.id.buttonsave);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                EditText e = (EditText) findViewById(R.id.editText);
+                String s = e.getText().toString();
+                e.setText("");
+                arrayList.add(s);
+                recyclerView4Adapter.notifyDataSetChanged();
             }
-        }
+            @Override
+            public boolean onCreateOptionsMenu(Menu menu) {
+                getMenuInflater().inflate(R.menu.menu, menu);
+                MenuItem menuItem = menu.findItem(R.id.action_create);
+                menuItem.setVisible(recyclerView4Adapter.checkedCount > 0);
+                return true;
+            }
+
+            @Override public boolean onOptionsItemSelected(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.action_create) {
+                    startMemoActivityForResult(REQUEST_CREATE, null);
+                    return true;
+
+                });
+                private void startMemoActivityForResult(int requestCode, Memo memo) {
+                    Intent intent = new Intent(this, MemoActivity.class);
+                    intent.putExtra("MEMO", memo);
+                    startActivityForResult(intent, requestCode);
+                }
+            }
     }
 
-    LayoutInflater layoutInflater;
-    ArrayList<Memo> arrayList;
-    int checkedCount = 0;
-
-    public RecyclerView2Adapter(Context context, ArrayList<Memo> arrayList) {
-        this.layoutInflater = LayoutInflater.from(context);
-        this.arrayList = arrayList;
-    }
-
-    @Override
-    public int getItemCount() {
-        return arrayList.size();
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = layoutInflater.inflate(R.layout.memo2, viewGroup, false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, final int index) {
-        viewHolder.setData();
-    }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">gitTest_1</string>
+    <string name="app_name">MidExam</string>
     <string name="save">저장</string>
     <string name="button_save">저장</string>
     <string name="action_create">생성</string>

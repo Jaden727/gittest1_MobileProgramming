@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
         public void btnRecyclerView3_clicked(View view) {
-            Intent intent = new Intent(this, RecyclerViewActivity.class);
+            Intent intent = new Intent(this, RecyclerView4Activity.class);
             startActivity(intent);
     }
 }

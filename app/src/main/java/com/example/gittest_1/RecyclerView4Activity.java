@@ -17,17 +17,26 @@ import java.util.ArrayList;
 
 public class RecyclerView4Activity extends AppCompatActivity {
     private static final int REQUEST_CREATE = 0;
-
+    int memoIndex;
     RecyclerView4Adapter recyclerView4Adapter;
-    ArrayList<String> arrayList;
+    ArrayList<Memo> arrayList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view4);
 
-        arrayList = new ArrayList<String>();
-        arrayList.add("one");
-        arrayList.add("two");
+        arrayList = new ArrayList<Memo>();
+        arrayList.add(new Memo("one");
+        arrayList.add(new Memo("two"));
+
+        recyclerView4Adapter = new RecyclerView4Adapter(this, arrayList, new OnMemoClickListener() {
+
+            public void onMemoClicked(int index) {
+
+            }
+        });
 
 
         recyclerView4Adapter = new RecyclerView4Adapter(this, arrayList);
@@ -82,4 +91,4 @@ public class RecyclerView4Activity extends AppCompatActivity {
                 intent.putExtra("MEMO", memo);
                 startActivityForResult(intent, requestCode);
             }
-        } 
+        }

@@ -1,17 +1,15 @@
 package com.example.gittest_1;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class RecyclerView4Adapter extends RecyclerView.Adapter<RecyclerView4Adapter.ViewHolder> {
-
-    public int checkedCount;
 
     static class ViewHolder extends RecyclerView.ViewHolder  {
         TextView textView;
@@ -19,6 +17,7 @@ public class RecyclerView4Adapter extends RecyclerView.Adapter<RecyclerView4Adap
         public ViewHolder(View view) {
             super(view);
             textView = view.findViewById(R.id.textView);
+
         }
     }
 
